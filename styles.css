@@ -58,6 +58,7 @@ em { font-style: italic; }
 
 /* Banner and menu bar */
 .banner { text-align: center; font-size: 13px; letter-spacing: .04em; color: var(--body); padding: 10px 16px; background: rgba(255,255,255,.04); border-bottom: 1px solid var(--line); }
+.banner a { color: var(--white); text-underline-offset: 3px; }
 .nav { position: sticky; top: 0; z-index: 20; background: rgba(3, 17, 26, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 76px; max-width: 1440px; margin: 0 auto; padding: 0 80px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }

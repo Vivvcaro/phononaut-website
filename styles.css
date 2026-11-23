@@ -3,7 +3,7 @@
 :root {
   --sea: #03111a;
   --sea-2: #061a26;
-  --card: rgba(255, 255, 255, .045);
+  --card: rgba(8, 26, 36, .62);
   --line: rgba(255, 255, 255, .14);
   --white: #ffffff;
   --body: #c4d9da;
@@ -157,10 +157,22 @@ em { font-style: italic; }
 .artists p { max-width: 640px; font-size: 18px; }
 .privacy p.lines { font-family: var(--serif); font-weight: 300; color: var(--white); font-size: 44px; line-height: 1.2; }
 
-/* Water background, as in the hero */
-.statement--water, .section--water { position: relative; background: url("images/water.jpg") center / cover no-repeat; }
-.statement--water::before, .section--water::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--sea), rgba(3,17,26,.15) 22%, rgba(3,17,26,.15) 78%, var(--sea)); pointer-events: none; }
-.statement--water > *, .section--water > * { position: relative; }
+/* Water across the whole page: each section shows a different part of it */
+main > section:not(.hero), .footer { position: relative; isolation: isolate; }
+main > section:not(.hero)::before, .footer::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(to bottom, var(--sea) 0%, rgba(3,17,26,.35) 22%, rgba(3,17,26,.35) 78%, var(--sea) 100%),
+    url("images/water.jpg") var(--wpos, center) / var(--wsize, cover) no-repeat;
+  transform: var(--wflip, none);
+  opacity: var(--wo, .9);
+}
+main > section:nth-of-type(4n+1) { --wpos: 15% 25%; --wsize: 170% auto; }
+main > section:nth-of-type(4n+2) { --wpos: 75% 60%; --wsize: 150% auto; --wflip: scaleX(-1); }
+main > section:nth-of-type(4n+3) { --wpos: 40% 85%; --wsize: 210% auto; --wflip: scaleY(-1); }
+main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip: scale(-1, -1); }
+.statement--water, .section--water { --wo: 1; --wsize: cover; --wpos: center; }
+.footer { --wpos: 30% 70%; --wsize: 220% auto; --wo: .5; }
 .statement--water { padding: 160px 0; }
 
 /* Questions */

@@ -92,7 +92,9 @@ em { font-style: italic; }
 .card { position: relative; z-index: 1; padding: 44px 48px; border-radius: 24px; border: 1px solid var(--line); background: rgba(20, 40, 50, .82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
 .card h3 { font-size: 34px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
 .card__science { margin: 24px 0; font-size: 24px; color: var(--accent); min-height: 2.6em; }
-.wave { display: flex; align-items: center; gap: 3px; height: 40px; margin-bottom: 28px; }
+.wave { display: flex; align-items: center; gap: 3px; height: 40px; }
+.card { transition: opacity .25s ease, transform .25s ease; }
+.card.is-changing { opacity: 0; transform: translateX(16px); }
 .wave span { flex: 1; background: rgba(168, 214, 214, .55); border-radius: 2px; }
 
 /* How it works */

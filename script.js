@@ -13,10 +13,19 @@ const count = document.getElementById("count");
 const dashes = document.querySelectorAll(".progress__dashes span");
 let current = 0;
 
+const card = document.querySelector(".deck .card");
+const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function show(i) {
   current = (i + moments.length) % moments.length;
   moment.textContent = moments[current][0];
-  mechanism.textContent = moments[current][1];
+  if (calm || !card) {
+    mechanism.textContent = moments[current][1];
+  } else {
+    // the card slips away and the next one arrives with the new element
+    card.classList.add("is-changing");
+    setTimeout(() => { mechanism.textContent = moments[current][1]; card.classList.remove("is-changing"); }, 250);
+  }
   count.textContent = String(current + 1).padStart(2, "0") + " / 05";
   dashes.forEach((d, k) => d.classList.toggle("is-on", k === current));
 }

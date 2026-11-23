@@ -56,3 +56,61 @@ if (row && more) {
     row.scrollBy({ left: atEnd ? -row.scrollWidth : 384, behavior: "smooth" });
   });
 }
+
+// Join the waitlist and Subscribe open the same small form, sent to Formspree.
+const signup = document.getElementById("signup");
+if (signup) {
+  const form = document.getElementById("signup-form");
+  const email = document.getElementById("signup-email");
+  const error = document.getElementById("signup-error");
+  const done = document.getElementById("signup-done");
+  const submit = document.getElementById("signup-submit");
+  const copy = {
+    waitlist: { eyebrow: "Private beta", title: "Join the waitlist", lead: "Leave your email and we’ll let you know when there is a place for you.", button: "Join the waitlist", list: "Waitlist", subject: "New Phononaut waitlist sign-up", done: "Thank you, you’re on the list." },
+    subscribe: { eyebrow: "News", title: "Subscribe", lead: "Leave your email to hear about Phononaut, new journeys and live sessions.", button: "Subscribe", list: "Newsletter", subject: "New Phononaut newsletter subscriber", done: "Thank you for subscribing." },
+  };
+  let current = copy.waitlist;
+
+  function open(kind) {
+    current = copy[kind] || copy.waitlist;
+    document.getElementById("signup-eyebrow").textContent = current.eyebrow;
+    document.getElementById("signup-title").textContent = current.title;
+    document.getElementById("signup-lead").textContent = current.lead;
+    document.getElementById("signup-list").value = current.list;
+    document.getElementById("signup-subject").value = current.subject;
+    submit.textContent = current.button;
+    form.querySelectorAll(".signup__label, .signup__input, .signup__submit, .signup__error").forEach((el) => (el.hidden = false));
+    done.hidden = true; error.textContent = ""; email.removeAttribute("aria-invalid"); email.value = "";
+    signup.showModal();
+    email.focus();
+  }
+
+  document.querySelectorAll("[data-signup]").forEach((b) => b.addEventListener("click", () => open(b.dataset.signup)));
+  document.getElementById("signup-close").addEventListener("click", () => signup.close());
+  signup.addEventListener("click", (e) => { if (e.target === signup) signup.close(); });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    error.textContent = "";
+    if (!email.checkValidity()) {
+      email.setAttribute("aria-invalid", "true");
+      error.textContent = "Please enter a valid email address.";
+      email.focus();
+      return;
+    }
+    email.removeAttribute("aria-invalid");
+    submit.disabled = true;
+    const label = submit.textContent; submit.textContent = "Sending…";
+    try {
+      const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+      if (!res.ok) throw new Error("not ok");
+      form.querySelectorAll(".signup__label, .signup__input, .signup__submit, .signup__error").forEach((el) => (el.hidden = true));
+      document.getElementById("signup-lead").textContent = "";
+      done.textContent = current.done; done.hidden = false;
+    } catch (err) {
+      error.textContent = "Something went wrong. Please try again, or write to hello@phononaut.com.";
+    } finally {
+      submit.disabled = false; submit.textContent = label;
+    }
+  });
+}

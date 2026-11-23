@@ -8,7 +8,7 @@ Open `index.html` in a browser.
 
 ## Still to fill in before it goes live
 
-- **Waitlist and Subscribe:** for now these buttons open an email to hello@phononaut.com. A proper sign-up form can replace them once one is chosen.
+- **Waitlist and Subscribe:** both open a small form that sends the email address to Formspree (form moedpyzq), marked Waitlist or Newsletter.
 - **Links:** Instagram, X and LinkedIn for Phononaut (footer); Viviana's own Instagram and LinkedIn (About me); Our artist collaborators; Artists; Terms.
 - **Draft wording, to be approved by Viviana:** the answers about safety, medical conditions and data in Questions and answers; the whole privacy policy.
 - **The email address:** hello@phononaut.com needs the phononaut.com domain and an inbox.

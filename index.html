@@ -21,7 +21,7 @@
         <img src="images/half-fish.png" alt="" width="48" height="32">
         <span>Phononaut</span>
       </a>
-      <a class="button button--small" href="mailto:hello@phononaut.com?subject=Join%20the%20Phononaut%20waitlist">Join the waitlist</a>
+      <button type="button" class="button button--small" data-signup="waitlist">Join the waitlist</button>
     </div>
   </header>
 
@@ -32,8 +32,8 @@
         <h1>Sonic doses for inner world explorations</h1>
         <p class="hero__sub">A psychedelic-like experience through sound</p>
         <div class="buttons">
-          <a class="button" href="mailto:hello@phononaut.com?subject=Join%20the%20Phononaut%20waitlist">Join the waitlist</a>
-          <a class="button button--outline" href="mailto:hello@phononaut.com?subject=Subscribe%20to%20Phononaut%20news">Subscribe</a>
+          <button type="button" class="button" data-signup="waitlist">Join the waitlist</button>
+          <button type="button" class="button button--outline" data-signup="subscribe">Subscribe</button>
         </div>
       </div>
     </section>
@@ -195,7 +195,7 @@
     <section class="closing">
       <h2>Begin your <em>first</em> dive.</h2>
       <p>Because healing does not have to be boring</p>
-      <a class="button" href="mailto:hello@phononaut.com?subject=Join%20the%20Phononaut%20waitlist">Join the waitlist</a>
+      <button type="button" class="button" data-signup="waitlist">Join the waitlist</button>
       <p class="healing">Healing often begins when<br>the story changes</p>
     </section>
     <section class="section" id="questions">
@@ -234,6 +234,22 @@
     </div>
   </footer>
 
+
+  <dialog class="signup" id="signup" aria-labelledby="signup-title">
+    <form class="signup__form" id="signup-form" action="https://formspree.io/f/moedpyzq" method="POST" novalidate>
+      <button type="button" class="signup__close" id="signup-close" aria-label="Close">×</button>
+      <p class="eyebrow" id="signup-eyebrow">Private beta</p>
+      <h2 id="signup-title">Join the waitlist</h2>
+      <p class="signup__lead" id="signup-lead">Leave your email and we’ll let you know when there is a place for you.</p>
+      <input type="hidden" name="list" id="signup-list" value="Waitlist">
+      <input type="hidden" name="_subject" id="signup-subject" value="New Phononaut waitlist sign-up">
+      <label class="signup__label" for="signup-email">Email</label>
+      <input class="signup__input" type="email" id="signup-email" name="email" autocomplete="email" required placeholder="you@example.com">
+      <p class="signup__error" id="signup-error" role="alert"></p>
+      <button class="button signup__submit" type="submit" id="signup-submit">Join the waitlist</button>
+      <p class="signup__done" id="signup-done" role="status" hidden>Thank you, you’re on the list.</p>
+    </form>
+  </dialog>
   <script src="script.js"></script>
 </body>
 </html>

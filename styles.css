@@ -157,7 +157,20 @@ em { font-style: italic; }
 .artists p { max-width: 640px; font-size: 18px; }
 .privacy p.lines { font-family: var(--serif); font-weight: 300; color: var(--white); font-size: 44px; line-height: 1.2; }
 
+/* Water background, as in the hero */
+.statement--water, .section--water { position: relative; background: url("images/water.jpg") center / cover no-repeat; }
+.statement--water::before, .section--water::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--sea), rgba(3,17,26,.15) 22%, rgba(3,17,26,.15) 78%, var(--sea)); pointer-events: none; }
+.statement--water > *, .section--water > * { position: relative; }
+.statement--water { padding: 160px 0; }
+
 /* Questions */
+.faq-toggle { max-width: 900px; margin: 0 auto; }
+.faq-toggle > summary { list-style: none; display: flex; justify-content: center; align-items: center; gap: 12px; margin: 0 auto; width: max-content; padding: 14px 26px; border-radius: 999px; border: 1px solid rgba(255,255,255,.7); color: var(--white); font-size: 16px; font-weight: 500; cursor: pointer; }
+.faq-toggle > summary::-webkit-details-marker { display: none; }
+.faq-toggle > summary:hover { background: rgba(255,255,255,.08); }
+.faq-toggle__arrow { transition: transform .25s ease; }
+.faq-toggle[open] .faq-toggle__arrow { transform: rotate(180deg); }
+.faq-toggle[open] > .faq { margin-top: 48px; }
 .faq { max-width: 900px; margin: 0 auto; border-top: 1px solid var(--line); }
 .faq details { border-bottom: 1px solid var(--line); }
 .faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 26px 0; cursor: pointer; font-family: var(--serif); font-weight: 300; font-size: 28px; color: var(--white); }

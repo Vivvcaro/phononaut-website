@@ -56,10 +56,3 @@ if (row && more) {
     row.scrollBy({ left: atEnd ? -row.scrollWidth : 384, behavior: "smooth" });
   });
 }
-
-// The questions button changes its words when open.
-const faqToggle = document.querySelector(".faq-toggle");
-if (faqToggle) {
-  const label = faqToggle.querySelector(".faq-toggle__label");
-  faqToggle.addEventListener("toggle", () => { label.textContent = faqToggle.open ? "Hide the questions" : "See the questions"; });
-}

@@ -226,7 +226,7 @@ if (collab) {
   if (!canvas) return;
   const hero = canvas.closest(".hero");
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: false });
+  const gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: false, preserveDrawingBuffer: true });
   if (!gl || still) { canvas.remove(); return; }
 
   const MAX = 24;
@@ -245,15 +245,16 @@ if (collab) {
         float band = dist - radius;
         float env = exp(-abs(band) / 26.0) * (1.0 - age / 3.2) * r.w;
         float wave = sin(band / 7.5) * env;
-        off += (dist > 0.001 ? d / dist : vec2(0.0)) * wave * 9.0;
-        light += wave * 0.10;
+        off += (dist > 0.001 ? d / dist : vec2(0.0)) * wave * 11.0;
+        // the crest of each ring catches the light; the trough is a touch darker
+        light += max(wave, 0.0) * 0.55 - max(-wave, 0.0) * 0.18;
       }
       // cover-fit the picture like background-size: cover
       float s = max(res.x / imgSize.x, res.y / imgSize.y);
       vec2 size = imgSize * s; vec2 start = (res - size) * 0.5;
       vec2 uv = (px + off - start) / size;
       vec3 c = texture2D(img, clamp(uv, 0.001, 0.999)).rgb;
-      c += vec3(0.55, 0.85, 0.95) * light;
+      c += vec3(0.45, 0.78, 0.88) * light * 0.6;
       gl_FragColor = vec4(c, 1.0);
     }`;
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };

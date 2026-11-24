@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Q&amp;A · Phononaut</title>
+  <meta name="description" content="Questions and answers about Phononaut.">
+  <link rel="icon" href="images/half-fish.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1795478820">
+</head>
+<body>
+
+  <p class="banner">Currently in private beta 🍀 <a href="https://acousticstates.com/#waitlist">join the waitlist</a> and help shape the future of music medicine</p>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="logo" href="index.html" aria-label="Phononaut, home">
+        <img src="images/half-fish.png" alt="" width="48" height="32">
+        <span>Phononaut</span>
+      </a>
+      <button type="button" class="button button--small" data-signup="waitlist">Join the waitlist</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-intro wrap">
+      <h1>Q&amp;A</h1>
+    </section>
+    <section class="wrap" style="padding-bottom:140px">
+        <div class="faq">
+          <details><summary>What exactly is Phononaut?</summary><p>An iPhone app of guided listening journeys: sound composed and guided to help you explore altered states of consciousness without drugs. It is not a music streaming service, a meditation app or white noise.</p></details>
+          <details><summary>Is this a medical or clinical product?</summary><p>No. Phononaut is a wellness and listening app. It is not a medical device, therapy or treatment, and we make no clinical claims.</p></details>
+          <details><summary>Is there research behind this?</summary><p>Yes. Phononaut grows out of Viviana Caro’s PhD research into sound, ritual and consciousness, and her methodology, Acoustic States of Consciousness. It draws on music neuroscience, psychoacoustics and neuroaesthetics.</p></details>
+          <details><summary>What should I expect during a journey?</summary><p>Guided voice and music, moments of silence, and time for your own inner process. Some people see vivid imagery, others feel sensations in the body, and some sit quietly with their thoughts. There is no right experience.</p></details>
+          <details><summary>What is the difference between a Microdose and a Medium dose?</summary><p>A Microdose lasts 7 to 21 minutes and stays nearer the surface. A Medium dose lasts up to 45 minutes and goes deeper. A Macrodose is coming soon.</p></details>
+          <details><summary>What if it feels overwhelming?</summary><p>You can pause or finish at any time. Phononaut is a tool, not a replacement for professional support: if something big comes up, talk to a therapist or your GP.</p></details>
+          <details><summary>Is it safe if I have a medical condition?</summary><p>Please check with your healthcare provider first if you have epilepsy triggered by sound or light, a history of psychosis or dissociation, a heart condition, severe anxiety, or recent trauma without professional support.</p></details>
+          <details><summary>What happens to my answers?</summary><p>Your reflections belong to you. With your consent, your answers help Viviana’s research. You can download your data or delete your account at any time. Full details are in our <a href="privacy.html">privacy policy</a>.</p></details>
+          <details><summary>Do you use AI-generated music?</summary><p>No. Every journey is composed and recorded by real musicians and sound artists, who are credited and paid for their work.</p></details>
+        </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>
+        <a class="logo" href="index.html"><img src="images/half-fish.png" alt="" width="48" height="32"><span>Phononaut</span></a>
+        <p class="footer__social"><a href="#">Instagram</a> &nbsp;·&nbsp; <a href="#">X</a> &nbsp;·&nbsp; <a href="#">LinkedIn</a> &nbsp;·&nbsp; <a href="mailto:hello@phononaut.com">hello@phononaut.com</a></p>
+      </div>
+      <nav class="footer__cols" aria-label="Footer">
+        <div><h4>Phononaut</h4><a href="index.html#how">How it works</a><a href="privacy.html">Privacy</a><a href="qa.html">Q&amp;A</a></div>
+        <div><h4>About</h4><a href="https://phantomfish.com">Phantom Fish</a><a href="https://www.acousticstates.com">Acoustic States</a><a href="#">Artists</a></div>
+        <div><h4>Support</h4><a href="mailto:hello@phononaut.com">Support</a><a href="#">Terms</a><a href="privacy.html">Privacy</a></div>
+      </nav>
+      <p class="footer__company">Phononaut is made by Phantom Fish Ltd · Registered in England and Wales · Company no. 17591944</p>
+    </div>
+  </footer>
+
+
+  <dialog class="signup" id="signup" aria-labelledby="signup-title">
+    <form class="signup__form" id="signup-form" action="https://formspree.io/f/moedpyzq" method="POST" novalidate>
+      <button type="button" class="signup__close" id="signup-close" aria-label="Close">×</button>
+      <p class="eyebrow" id="signup-eyebrow">Private beta</p>
+      <h2 id="signup-title">Join the waitlist</h2>
+      <p class="signup__lead" id="signup-lead">Leave your email and we’ll let you know when there is a place for you.</p>
+      <input type="hidden" name="list" id="signup-list" value="Waitlist">
+      <input type="hidden" name="_subject" id="signup-subject" value="New Phononaut waitlist sign-up">
+      <label class="signup__label" for="signup-email">Email</label>
+      <input class="signup__input" type="email" id="signup-email" name="email" autocomplete="email" required placeholder="you@example.com">
+      <p class="signup__error" id="signup-error" role="alert"></p>
+      <button class="button signup__submit" type="submit" id="signup-submit">Join the waitlist</button>
+      <p class="signup__done" id="signup-done" role="status" hidden>Thank you, you’re on the list.</p>
+    </form>
+  </dialog>
+  <script src="script.js?v=1795478820"></script>
+</body>
+</html>

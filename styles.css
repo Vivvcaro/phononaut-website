@@ -223,12 +223,12 @@ main > section:not(.hero):not(.wrap)::before, .footer::before {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 min(160px, 35%), #000 calc(100% - min(160px, 35%)), transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0, #000 min(160px, 35%), #000 calc(100% - min(160px, 35%)), transparent 100%);
 }
-main > section:nth-of-type(4n+1) { --wpos: 15% 25%; --wsize: 140% auto; }
-main > section:nth-of-type(4n+2) { --wpos: 75% 60%; --wsize: 130% auto; --wflip: scaleX(-1); }
-main > section:nth-of-type(4n+3) { --wpos: 40% 85%; --wsize: 160% auto; --wflip: scaleY(-1); }
-main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip: scale(-1, -1); }
+main > section:nth-of-type(4n+1) { --wpos: 15% 25%; --wsize: cover; }
+main > section:nth-of-type(4n+2) { --wpos: 75% 60%; --wsize: cover; --wflip: scaleX(-1); }
+main > section:nth-of-type(4n+3) { --wpos: 40% 85%; --wsize: cover; --wflip: scaleY(-1); }
+main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: cover; --wflip: scale(-1, -1); }
 .statement--water, .section--water { --wo: 1; --wsize: cover; --wpos: center; }
-.footer { --wpos: 30% 70%; --wsize: 160% auto; --wo: .5; }
+.footer { --wpos: 30% 70%; --wsize: cover; --wo: .5; }
 .statement--water { padding: 160px 0; }
 
 /* Questions */
@@ -404,9 +404,9 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip:
 .footer__tagline { font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 27px; color: var(--white); opacity: .85; }
 @media (max-width: 760px) { .footer__right { align-items: flex-start; } }
 
-.statement--for { padding: 120px 0 40px; }
-.statement--for p { font-size: 44px; max-width: 980px; text-wrap: balance; }
-@media (max-width: 760px) { .statement--for { padding: 72px 0 8px; } .statement--for p { font-size: 30px; } }
+.statement--for { min-height: min(88vh, 820px); display: flex; align-items: center; justify-content: center; padding: 160px 24px; }
+.statement--for p { font-size: clamp(44px, 5.6vw, 80px); line-height: 1.12; max-width: 1180px; text-wrap: balance; }
+@media (max-width: 760px) { .statement--for { min-height: min(80vh, 640px); padding: 100px 20px; } .statement--for p { font-size: 40px; } }
 
 /* Testimonies drift slowly and continuously, as on acousticstates.com */
 .voices__row { overflow: hidden; padding: 12px 0 28px; scroll-snap-type: none; }

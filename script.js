@@ -94,8 +94,9 @@ if (track) {
   }
   requestAnimationFrame(frame);
   const row = document.getElementById("voices");
-  row.addEventListener("mouseenter", () => (paused = true));
-  row.addEventListener("mouseleave", () => (paused = false));
+  // pause only while the pointer is over a card itself
+  track.addEventListener("mouseover", (e) => { paused = !!e.target.closest(".quote"); });
+  track.addEventListener("mouseleave", () => (paused = false));
   document.getElementById("voices-next").addEventListener("click", () => { target = (target ?? x) + step(); });
   document.getElementById("voices-prev").addEventListener("click", () => { target = (target ?? x) - step(); });
 }

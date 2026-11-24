@@ -71,10 +71,33 @@ if (wave) {
   }
 }
 
-// Testimonies: repeat the cards once so the drift loops without a gap.
+// Testimonies drift on their own; the side arrows jump one card forwards or back.
 const track = document.getElementById("voices-track");
-if (track && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  [...track.children].forEach((q) => { const c = q.cloneNode(true); c.setAttribute("aria-hidden", "true"); track.appendChild(c); });
+if (track) {
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const originals = [...track.children];
+  originals.forEach((q) => { const c = q.cloneNode(true); c.setAttribute("aria-hidden", "true"); track.appendChild(c); });
+  track.style.animation = "none";
+  let x = 0, paused = false, last = performance.now(), target = null;
+  const half = () => track.scrollWidth / 2;
+  const step = () => (originals[0].offsetWidth || 360) + 24;
+  const speed = 18; // pixels per second
+  function frame(now) {
+    const dt = Math.min(64, now - last) / 1000; last = now;
+    if (target !== null) {
+      const d = target - x; x += d * Math.min(1, dt * 7);
+      if (Math.abs(d) < 0.5) { x = target; target = null; }
+    } else if (!paused && !still) { x += speed * dt; }
+    const h = half(); if (h) { if (x >= h) { x -= h; if (target !== null) target -= h; } if (x < 0) { x += h; if (target !== null) target += h; } }
+    track.style.transform = "translateX(" + (-x) + "px)";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  const row = document.getElementById("voices");
+  row.addEventListener("mouseenter", () => (paused = true));
+  row.addEventListener("mouseleave", () => (paused = false));
+  document.getElementById("voices-next").addEventListener("click", () => { target = (target ?? x) + step(); });
+  document.getElementById("voices-prev").addEventListener("click", () => { target = (target ?? x) - step(); });
 }
 
 // Join the waitlist and Subscribe open the same small form, sent to Formspree.

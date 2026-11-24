@@ -47,14 +47,24 @@ if (wave) {
   }
 }
 
-// The arrow beside the quotes scrolls to the next ones.
+// The arrows beside the quotes move them left and right.
 const row = document.getElementById("voices");
 const more = document.getElementById("voices-next");
-if (row && more) {
-  more.addEventListener("click", () => {
+const back = document.getElementById("voices-prev");
+if (row && more && back) {
+  const section = row.closest(".voices");
+  const step = () => (row.querySelector(".quote")?.offsetWidth || 360) + 24;
+  const update = () => {
+    const atStart = row.scrollLeft <= 4;
     const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 4;
-    row.scrollBy({ left: atEnd ? -row.scrollWidth : 384, behavior: "smooth" });
-  });
+    back.disabled = atStart; more.disabled = atEnd;
+    section.classList.toggle("is-scrolled", !atStart);
+  };
+  more.addEventListener("click", () => row.scrollBy({ left: step(), behavior: "smooth" }));
+  back.addEventListener("click", () => row.scrollBy({ left: -step(), behavior: "smooth" }));
+  row.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  update();
 }
 
 // Join the waitlist and Subscribe open the same small form, sent to Formspree.

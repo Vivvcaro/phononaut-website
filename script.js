@@ -301,7 +301,7 @@ if (collab) {
   addEventListener("resize", resize);
 
   // only clicks on the water itself: not on text, buttons, pictures, cards or forms
-  const solid = "a, button, img, input, textarea, label, summary, dialog, p, h1, h2, h3, cite, .card, .quote, .step__card, .step__picture, .doses, .about__card, .photos, .hero__words, .nav, .banner, .footer";
+  const solid = "a, button, img, input, textarea, label, summary, dialog, p, h1, h2, h3, cite, .card, .quote, .step__card, .step__picture, .doses, .about__card, .photos, .nav, .banner, .footer, .hero__phones";
   document.addEventListener("pointerdown", (e) => {
     if (!ready || e.button > 0 || e.target.closest(solid)) return;
     add(e.clientX, e.clientY, 1.0);

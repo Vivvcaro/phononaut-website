@@ -37,7 +37,24 @@ function show(i) {
   dashes.forEach((d, k) => d.classList.toggle("is-on", k === current));
 }
 
+// Keep the science section the same height for every moment, so the arrows never move under the mouse.
+function steadyScience() {
+  if (!moment || !card) return;
+  const felt = document.querySelector(".science__felt");
+  card.style.minHeight = ""; moment.style.minHeight = "";
+  const keep = [moment.textContent, mechanism.textContent, paper && paper.textContent];
+  let tallCard = 0, tallMoment = 0;
+  moments.forEach((m) => {
+    moment.textContent = m[0]; mechanism.textContent = m[1]; if (paper) paper.textContent = m[2];
+    tallCard = Math.max(tallCard, card.offsetHeight); tallMoment = Math.max(tallMoment, moment.offsetHeight);
+  });
+  moment.textContent = keep[0]; mechanism.textContent = keep[1]; if (paper) paper.textContent = keep[2];
+  card.style.minHeight = tallCard + "px"; moment.style.minHeight = tallMoment + "px";
+}
 if (moment) {
+  steadyScience();
+  window.addEventListener("resize", steadyScience);
+  if (document.fonts) document.fonts.ready.then(steadyScience);
   document.getElementById("prev").addEventListener("click", () => show(current - 1));
   document.getElementById("next").addEventListener("click", () => show(current + 1));
 }

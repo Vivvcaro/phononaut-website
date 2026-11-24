@@ -108,7 +108,7 @@ button.button { font-family: inherit; cursor: pointer; }
 .science__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: stretch; }
 .science__felt { display: flex; flex-direction: column; padding-top: 44px; }
 .science__felt h3 { font-size: 34px; line-height: 1.2; margin-bottom: 0; }
-.science__moment { font-family: var(--serif); font-weight: 300; font-size: 56px; line-height: 1.1; color: var(--white); margin-top: 24px; height: 3.3em; display: flex; align-items: flex-start; }
+.science__moment { font-family: var(--serif); font-weight: 300; font-size: 56px; line-height: 1.1; color: var(--white); margin-top: 24px; display: flex; align-items: flex-start; }
 .science__felt .progress { margin-top: auto; }
 .progress { display: flex; align-items: center; gap: 22px; margin-top: 36px; font-size: 13px; }
 .progress__dashes { display: flex; gap: 6px; }
@@ -302,7 +302,7 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
   .hero__sub { font-size: 18px; }
   .lead { font-size: 38px; padding: 72px 16px 0; }
   .science__grid { grid-template-columns: 1fr; gap: 48px; }
-  .science__moment { font-size: 40px; height: 3.4em; }
+  .science__moment { font-size: 40px; }
   .science__felt { padding-top: 0; }
   .science__felt .progress { margin-top: 24px; }
   .link-arrow { display: none; }

@@ -103,8 +103,8 @@ button.button { font-family: inherit; cursor: pointer; }
 .hero__sub { margin: 22px 0 36px; font-size: 21px; }
 
 /* Science moments */
-.lead { font-size: 56px; text-align: center; padding-top: 120px; }
-.science { position: relative; padding: 90px 0 140px; }
+.lead { font-size: 56px; text-align: center; padding: 0 16px 70px; }
+.science { position: relative; padding: 120px 0 140px; }
 .science__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: stretch; }
 .science__felt { display: flex; flex-direction: column; padding-top: 44px; }
 .science__felt h3 { font-size: 34px; line-height: 1.2; margin-bottom: 0; }
@@ -215,10 +215,13 @@ main > section:not(.hero):not(.wrap), .footer { position: relative; isolation: i
 main > section:not(.hero):not(.wrap)::before, .footer::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
-    linear-gradient(to bottom, var(--sea) 0%, rgba(3,17,26,.35) 22%, rgba(3,17,26,.35) 78%, var(--sea) 100%),
+    linear-gradient(rgba(3,17,26,.35), rgba(3,17,26,.35)),
     url("images/water.jpg?v=1795513980") var(--wpos, center) / var(--wsize, cover) no-repeat;
   transform: var(--wflip, none);
   opacity: var(--wo, .9);
+  /* the water fades out softly at the top and bottom of every section, so there is never a hard line */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 min(160px, 35%), #000 calc(100% - min(160px, 35%)), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 min(160px, 35%), #000 calc(100% - min(160px, 35%)), transparent 100%);
 }
 main > section:nth-of-type(4n+1) { --wpos: 15% 25%; --wsize: 140% auto; }
 main > section:nth-of-type(4n+2) { --wpos: 75% 60%; --wsize: 130% auto; --wflip: scaleX(-1); }
@@ -301,7 +304,7 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip:
   .hero__words { padding: 0 16px; }
   .hero h1 { font-size: 44px; }
   .hero__sub { font-size: 18px; }
-  .lead { font-size: 38px; padding: 72px 16px 0; }
+  .lead { font-size: 38px; padding: 0 16px 48px; }
   .science__grid { grid-template-columns: 1fr; gap: 48px; }
   .science__moment { font-size: 40px; }
   .science__felt { padding-top: 0; }

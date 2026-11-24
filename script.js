@@ -123,3 +123,65 @@ if (signup) {
     }
   });
 }
+
+// Apply as a collaborator: a fuller form, with social links, a message and a music sample.
+const collab = document.getElementById("collab");
+if (collab) {
+  const form = document.getElementById("collab-form");
+  const fields = form.querySelector(".collab__fields");
+  const error = document.getElementById("collab-error");
+  const done = document.getElementById("collab-done");
+  const submit = document.getElementById("collab-submit");
+  const file = document.getElementById("collab-file");
+  const fileName = document.getElementById("collab-file-name");
+  const MAX = 25 * 1024 * 1024;
+
+  document.getElementById("collab-open").addEventListener("click", () => {
+    fields.hidden = false; done.hidden = true; error.textContent = "";
+    collab.showModal(); document.getElementById("collab-name").focus();
+  });
+  document.getElementById("collab-close").addEventListener("click", () => collab.close());
+  collab.addEventListener("click", (e) => { if (e.target === collab) collab.close(); });
+  file.addEventListener("change", () => { fileName.textContent = file.files[0] ? file.files[0].name : "No file chosen"; });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    error.textContent = "";
+    form.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+    for (const id of ["collab-name", "collab-email", "collab-message", "collab-link"]) {
+      const el = document.getElementById(id);
+      if (!el.checkValidity()) {
+        el.setAttribute("aria-invalid", "true"); el.focus();
+        error.textContent = id === "collab-email" ? "Please enter a valid email address."
+          : id === "collab-link" ? "Please enter a full link, starting with https://"
+          : "Please fill in your " + (id === "collab-name" ? "name." : "message.");
+        return;
+      }
+    }
+    const chosen = file.files[0];
+    if (!chosen && !document.getElementById("collab-link").value.trim()) {
+      error.textContent = "Please add a link to your music or upload a sample."; return;
+    }
+    if (chosen && chosen.size > MAX) { error.textContent = "That file is over 25 MB. Please share a link instead."; return; }
+
+    submit.disabled = true; const label = submit.textContent; submit.textContent = "Sending…";
+    const send = (data) => fetch(form.action, { method: "POST", body: data, headers: { Accept: "application/json" } });
+    try {
+      let res = await send(new FormData(form));
+      if (!res.ok && chosen) {
+        // If the upload is refused, send the application without the file so nothing is lost.
+        const data = new FormData(form); data.delete("sample");
+        data.append("sample_note", "They tried to upload " + chosen.name + " but the upload did not go through.");
+        res = await send(data);
+        if (res.ok) error.textContent = "";
+      }
+      if (!res.ok) throw new Error("not ok");
+      form.reset(); fileName.textContent = "No file chosen";
+      fields.hidden = true; done.hidden = false;
+    } catch (err) {
+      error.textContent = "Something went wrong. Please try again, or write to hello@phononaut.com.";
+    } finally {
+      submit.disabled = false; submit.textContent = label;
+    }
+  });
+}

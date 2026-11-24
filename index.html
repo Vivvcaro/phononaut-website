@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1795478897">
+  <link rel="stylesheet" href="styles.css?v=1795478988">
 </head>
 <body>
 
@@ -178,7 +178,7 @@
         <h2>No AI-generated music.</h2>
         <p>Phononaut is built with musicians, composers and sound artists who understand the power of sound.</p>
         <div class="buttons">
-          <a class="button" href="mailto:hello@phononaut.com?subject=Apply%20as%20a%20collaborator">Apply as a collaborator</a>
+          <button type="button" class="button" id="collab-open">Apply as a collaborator</button>
           <a class="button button--outline" href="#">Our artist collaborators</a>
         </div>
       </div>
@@ -233,6 +233,35 @@
       <p class="signup__done" id="signup-done" role="status" hidden>Thank you, you’re on the list.</p>
     </form>
   </dialog>
-  <script src="script.js?v=1795478897"></script>
+
+  <dialog class="signup collab" id="collab" aria-labelledby="collab-title">
+    <form class="signup__form" id="collab-form" action="https://formspree.io/f/moedpyzq" method="POST" enctype="multipart/form-data" novalidate>
+      <button type="button" class="signup__close" id="collab-close" aria-label="Close">×</button>
+      <div class="collab__fields">
+        <p class="eyebrow">Artists</p>
+        <h2 id="collab-title">Apply as a collaborator</h2>
+        <p class="signup__lead">Tell us about your sound. We read every application.</p>
+        <input type="hidden" name="list" value="Collaborator">
+        <input type="hidden" name="_subject" value="New Phononaut collaborator application">
+        <label class="signup__label" for="collab-name">Name</label>
+        <input class="signup__input" type="text" id="collab-name" name="name" autocomplete="name" required>
+        <label class="signup__label" for="collab-email">Email</label>
+        <input class="signup__input" type="email" id="collab-email" name="email" autocomplete="email" required placeholder="you@example.com">
+        <label class="signup__label" for="collab-social">Social media and website</label>
+        <textarea class="signup__input signup__area" id="collab-social" name="social" rows="2" placeholder="Instagram, SoundCloud, Bandcamp, your website…"></textarea>
+        <label class="signup__label" for="collab-message">Message</label>
+        <textarea class="signup__input signup__area" id="collab-message" name="message" rows="4" required placeholder="Who you are and the kind of music you make"></textarea>
+        <label class="signup__label" for="collab-link">Link to your music</label>
+        <input class="signup__input" type="url" id="collab-link" name="music_link" placeholder="https://">
+        <label class="signup__label" for="collab-file">Or upload a sample <span class="signup__hint">(audio, up to 25 MB)</span></label>
+        <label class="file" for="collab-file"><span class="file__button">Choose a file</span><span class="file__name" id="collab-file-name">No file chosen</span></label>
+        <input class="file__input" type="file" id="collab-file" name="sample" accept="audio/*,.mp3,.wav,.aiff,.aif,.flac,.m4a">
+        <p class="signup__error" id="collab-error" role="alert"></p>
+        <button class="button signup__submit" type="submit" id="collab-submit">Send application</button>
+      </div>
+      <p class="signup__done" id="collab-done" role="status" hidden>Thank you. We’ve received your application and will be in touch.</p>
+    </form>
+  </dialog>
+  <script src="script.js?v=1795478988"></script>
 </body>
 </html>

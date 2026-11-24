@@ -358,3 +358,16 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
 .signup [hidden] { display: none !important; }
 .signup__close { position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--body); font-size: 26px; line-height: 1; cursor: pointer; }
 .signup__close:hover { background: rgba(255,255,255,.08); color: var(--white); }
+
+/* Collaborator application */
+.collab { width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 40px); overflow-y: auto; }
+.collab__fields { display: flex; flex-direction: column; gap: 10px; }
+.signup__area { border-radius: 18px; resize: vertical; min-height: 56px; line-height: 1.5; }
+.signup__hint { color: var(--body); letter-spacing: 0; opacity: .8; }
+.file { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.file__button { padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.06); color: var(--white); font-size: 14px; white-space: nowrap; }
+.file:hover .file__button { background: rgba(255,255,255,.12); }
+.file__name { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file__input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.file__input:focus-visible + .signup__error { outline: none; }
+.file:focus-within .file__button { outline: 2px solid var(--accent); outline-offset: 2px; }

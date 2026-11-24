@@ -404,3 +404,15 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
 .statement--for { padding: 120px 0 40px; }
 .statement--for p { font-size: 44px; max-width: 980px; text-wrap: balance; }
 @media (max-width: 760px) { .statement--for { padding: 72px 0 8px; } .statement--for p { font-size: 30px; } }
+
+/* Testimonies drift slowly and continuously, as on acousticstates.com */
+.voices__row { overflow: hidden; padding: 12px 0 28px; scroll-snap-type: none; }
+.voices__track { display: flex; gap: 24px; width: max-content; padding-left: 24px; animation: testimonialDrift 90s linear infinite; }
+.voices__row:hover .voices__track, .voices__row:focus-within .voices__track { animation-play-state: paused; }
+@keyframes testimonialDrift { to { transform: translateX(-50%); } }
+.voices__fade { width: 160px; }
+.voices__fade--left { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .voices__row { overflow-x: auto; }
+  .voices__track { animation: none; }
+}

@@ -71,24 +71,10 @@ if (wave) {
   }
 }
 
-// The arrows beside the quotes move them left and right.
-const row = document.getElementById("voices");
-const more = document.getElementById("voices-next");
-const back = document.getElementById("voices-prev");
-if (row && more && back) {
-  const section = row.closest(".voices");
-  const step = () => (row.querySelector(".quote")?.offsetWidth || 360) + 24;
-  const update = () => {
-    const atStart = row.scrollLeft <= 4;
-    const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 4;
-    back.disabled = atStart; more.disabled = atEnd;
-    section.classList.toggle("is-scrolled", !atStart);
-  };
-  more.addEventListener("click", () => row.scrollBy({ left: step(), behavior: "smooth" }));
-  back.addEventListener("click", () => row.scrollBy({ left: -step(), behavior: "smooth" }));
-  row.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
-  update();
+// Testimonies: repeat the cards once so the drift loops without a gap.
+const track = document.getElementById("voices-track");
+if (track && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  [...track.children].forEach((q) => { const c = q.cloneNode(true); c.setAttribute("aria-hidden", "true"); track.appendChild(c); });
 }
 
 // Join the waitlist and Subscribe open the same small form, sent to Formspree.

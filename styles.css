@@ -446,4 +446,8 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip:
 .ocean canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 body { background: transparent; }
 html { background: var(--sea); }
-main > section:not(.hero):not(.wrap)::before, .footer::before { content: none !important; }
+/* keep each section separate: dark at its top and bottom, the water showing through in the middle */
+main > section:not(.hero):not(.wrap)::before, .footer::before {
+  content: "" !important; background: linear-gradient(to bottom, var(--sea) 0%, rgba(3,17,26,.35) 22%, rgba(3,17,26,.35) 78%, var(--sea) 100%) !important; transform: none !important; opacity: 1 !important;
+}
+.hero::after { content: "" !important; position: absolute; inset: auto 0 0 0; height: 260px; background: linear-gradient(to bottom, rgba(3,17,26,0), var(--sea)); pointer-events: none; z-index: 1; }

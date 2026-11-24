@@ -373,28 +373,6 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
 .file__input:focus-visible + .signup__error { outline: none; }
 .file:focus-within .file__button { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* One creature or plant in each section, drifting slowly */
-.creature { position: absolute; z-index: 0; pointer-events: none; opacity: .9; filter: drop-shadow(0 0 24px rgba(120, 200, 255, .18)); animation: drift 14s ease-in-out infinite; }
-main > section > :not(.creature) { position: relative; z-index: 1; }
-.creature--jelly-blue { width: 90px; left: 1%; top: -40px; }
-.creature--turtle { width: 210px; right: 2%; top: 30px; animation-duration: 18s; }
-.creature--seahorse { width: 90px; left: 4%; top: 40px; }
-.creature--manta { width: 150px; right: 8%; top: 18%; animation-duration: 20s; }
-.creature--pearlfish { width: 170px; left: 1%; top: -10px; transform: scaleX(-1); animation-name: drift-flip; }
-.creature--jelly-red { width: 110px; right: 6%; top: 12%; }
-.creature--sunfish { width: 150px; left: 4%; top: 10px; animation-duration: 16s; }
-.creature--mandarin { width: 120px; right: 3%; top: 20px; }
-.creature--coral { width: 320px; right: 0; bottom: 0; animation: none; opacity: .8; }
-.creature--anemone { width: 300px; left: 0; bottom: 0; animation: none; opacity: .8; }
-@keyframes drift { 0%, 100% { translate: 0 0; } 50% { translate: 12px -18px; } }
-@keyframes drift-flip { 0%, 100% { translate: 0 0; } 50% { translate: -14px -12px; } }
-@media (max-width: 760px) {
-  .creature { width: 70px !important; opacity: .7; }
-  .creature--coral, .creature--anemone { width: 160px !important; }
-  .creature--turtle { width: 110px !important; }
-}
-@media (prefers-reduced-motion: reduce) { .creature { animation: none; } }
-
 .statement__action { margin-top: 32px; display: flex; justify-content: center; }
 
 /* Testimonies in 3D glass, like the buttons and the science card */

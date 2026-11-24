@@ -255,7 +255,7 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
 /* Footer */
 .footer { border-top: 1px solid var(--line); padding: 56px 0 48px; font-size: 15px; }
 .footer__inner { display: grid; grid-template-columns: 1fr auto; gap: 40px; max-width: 1440px; margin: 0 auto; padding: 0 80px; }
-.footer__cols { display: grid; grid-template-columns: repeat(3, auto); gap: 72px; }
+.footer__cols { display: grid; grid-template-columns: repeat(2, auto); gap: 72px; }
 .footer__cols h4 { margin: 0 0 12px; font-weight: 400; font-size: 15px; color: var(--accent); }
 .footer__cols a { display: block; text-decoration: none; margin-bottom: 8px; }
 .footer__cols a:hover, .footer__social a:hover { color: var(--white); }

@@ -108,7 +108,7 @@ button.button { font-family: inherit; cursor: pointer; }
 /* Science moments */
 .lead { font-size: 56px; text-align: center; padding-top: 120px; }
 .science { position: relative; padding: 90px 0 140px; }
-.science__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 110px; align-items: stretch; }
+.science__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: stretch; }
 .science__felt { display: flex; flex-direction: column; padding-top: 44px; }
 .science__felt h3 { font-size: 34px; line-height: 1.2; margin-bottom: 0; }
 .science__moment { font-family: var(--serif); font-weight: 300; font-size: 56px; line-height: 1.1; color: var(--white); margin-top: 24px; height: 3.3em; display: flex; align-items: flex-start; }
@@ -123,8 +123,25 @@ button.button { font-family: inherit; cursor: pointer; }
 .deck { position: relative; display: flex; }
 .deck .card { flex: 1; display: flex; flex-direction: column; }
 .card__science { flex: 1; }
-.link-arrow { position: absolute; left: -100px; top: 128px; width: 85px; height: 18px; color: var(--white); opacity: .9; }
-.card { position: relative; z-index: 1; padding: 44px 48px; border-radius: 24px; border: 1px solid var(--line); background: rgba(20, 40, 50, .82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.link-arrow { position: absolute; z-index: 2; left: -72px; top: 128px; width: 85px; height: 18px; color: var(--white); opacity: .9; }
+.card { position: relative; z-index: 1; padding: 44px 48px; border-radius: 24px; border: 0;
+  background:
+    radial-gradient(70% 45% at 25% 0%, rgba(255,255,255,.14), rgba(255,255,255,0) 100%),
+    linear-gradient(to bottom, rgba(120,190,210,.20) 0%, rgba(20,48,62,.78) 40%, rgba(12,34,46,.88) 100%);
+  backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.35),
+    inset 0 -6px 14px rgba(0,30,45,.55),
+    inset 0 -18px 30px rgba(153,229,255,.08),
+    0 3px 0 rgba(140,205,220,.22),
+    0 7px 0 rgba(0,20,30,.6),
+    0 30px 50px -14px rgba(0,8,14,.85);
+}
+.card::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,.6), rgba(255,255,255,.12) 45%, rgba(178,242,255,.35));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+}
 .card h3 { font-size: 34px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
 .card__science { margin: 24px 0; font-size: 24px; color: var(--accent); min-height: 2.6em; }
 .wave { display: flex; align-items: center; gap: 3px; height: 40px; }

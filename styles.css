@@ -60,32 +60,29 @@ em { font-style: italic; }
   background-clip: padding-box;
   backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%);
   --depth:
-    inset 0 2px 1px rgba(255,255,255,.55),
-    inset 0 -4px 8px rgba(0,30,45,.55),
-    inset 0 -10px 16px rgba(153,229,255,.16),
-    0 2px 0 rgba(140,205,220,.28),
-    0 4px 0 rgba(0,20,30,.55),
-    0 16px 30px -8px rgba(0,8,14,.75);
+    inset 0 1px 1px rgba(255,255,255,.3),
+    inset 0 -6px 14px rgba(153,229,255,.14),
+    0 3px 0 rgba(0,20,30,.45),
+    0 12px 24px -8px rgba(0,8,14,.6);
   box-shadow: var(--depth);
-  text-shadow: 0 1px 1px rgba(0,10,16,.45);
   transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
 }
 /* a glossy highlight across the top half, like a curved glass lens */
 .button::after, .arrow::after {
   content: ""; position: absolute; left: 8%; right: 8%; top: 1px; height: 52%; border-radius: 999px 999px 60% 60% / 999px 999px 40% 40%; pointer-events: none;
-  background: linear-gradient(to bottom, rgba(255,255,255,.22), rgba(255,255,255,.04) 70%, rgba(255,255,255,0));
+  background: linear-gradient(to bottom, rgba(255,255,255,.07), rgba(255,255,255,0) 80%);
 }
 .button:active, .arrow:active { transform: translateY(3px); box-shadow: inset 0 2px 1px rgba(255,255,255,.4), inset 0 -2px 6px rgba(0,30,45,.5), 0 1px 0 rgba(0,20,30,.55), 0 6px 14px -6px rgba(0,8,14,.7); }
 /* the glass edge: bright at the top, fading, with a cool glint at the bottom */
 .button::before, .arrow::before {
   content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: linear-gradient(to bottom, rgba(255,255,255,.75), rgba(255,255,255,.15) 50%, rgba(178,242,255,.45));
+  background: linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.12) 50%, rgba(178,242,255,.35));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
 }
 button.button { font-family: inherit; cursor: pointer; }
 .button:hover { transform: translateY(-2px); box-shadow: var(--depth), 0 0 22px rgba(153,229,255,.18); }
 /* the main action is a brighter glass */
-.button:not(.button--outline) { background: radial-gradient(60% 50% at 30% 0%, rgba(255,255,255,.32), rgba(255,255,255,0) 100%), linear-gradient(to bottom, rgba(255,255,255,.34) 0%, rgba(191,235,242,.14) 45%, rgba(153,217,229,.24) 100%); }
+.button:not(.button--outline) { background: radial-gradient(60% 50% at 30% 0%, rgba(255,255,255,.2), rgba(255,255,255,0) 100%), linear-gradient(to bottom, rgba(255,255,255,.26) 0%, rgba(191,235,242,.1) 45%, rgba(153,217,229,.18) 100%); }
 .button--small { padding: 10px 20px; font-size: 14px; }
 .button:focus-visible, .arrow:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
@@ -118,12 +115,12 @@ button.button { font-family: inherit; cursor: pointer; }
 .progress__dashes span { width: 10px; height: 2px; background: rgba(255,255,255,.3); transition: width .3s ease, background .3s ease; }
 .progress__dashes span.is-on { width: 26px; background: var(--white); }
 .arrows { display: flex; gap: 10px; margin-left: 20px; }
-.arrow { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--glass); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); --depth: inset 0 2px 1px rgba(255,255,255,.55), inset 0 -4px 8px rgba(0,30,45,.55), 0 2px 0 rgba(140,205,220,.28), 0 4px 0 rgba(0,20,30,.55), 0 12px 24px -8px rgba(0,8,14,.75); box-shadow: var(--depth); color: #eaf4f5; font-size: 18px; cursor: pointer; }
+.arrow { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--glass); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); --depth: inset 0 1px 1px rgba(255,255,255,.3), inset 0 -6px 14px rgba(153,229,255,.14), 0 3px 0 rgba(0,20,30,.45), 0 10px 20px -8px rgba(0,8,14,.6); box-shadow: var(--depth); color: #eaf4f5; font-size: 18px; cursor: pointer; }
 .arrow:hover { box-shadow: var(--depth), 0 0 18px rgba(153,229,255,.2); }
 .deck { position: relative; display: flex; }
 .deck .card { flex: 1; display: flex; flex-direction: column; }
 .card__science { flex: 1; }
-.link-arrow { position: absolute; z-index: 2; left: -72px; top: 128px; width: 85px; height: 18px; color: var(--white); opacity: .9; }
+.link-arrow { position: absolute; z-index: 2; left: -72px; top: 146px; width: 85px; height: 18px; color: var(--white); opacity: .9; }
 .card { position: relative; z-index: 1; padding: 44px 48px; border-radius: 24px; border: 0;
   background:
     radial-gradient(70% 45% at 25% 0%, rgba(255,255,255,.14), rgba(255,255,255,0) 100%),
@@ -145,6 +142,10 @@ button.button { font-family: inherit; cursor: pointer; }
 .card h3 { font-size: 34px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
 .card__science { margin: 24px 0; font-size: 24px; color: var(--accent); min-height: 2.6em; }
 .wave { display: flex; align-items: center; gap: 3px; height: 40px; }
+.paper { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.5; min-height: 5.6em; }
+.paper__label { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.paper a { color: var(--body); text-decoration: none; }
+.paper a:hover { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
 .card { transition: opacity .25s ease, transform .25s ease; }
 .card.is-changing { opacity: 0; transform: translateX(16px); }
 .wave span { flex: 1; background: rgba(168, 214, 214, .55); border-radius: 2px; }
@@ -371,3 +372,48 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
 .file__input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .file__input:focus-visible + .signup__error { outline: none; }
 .file:focus-within .file__button { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* One creature or plant in each section, drifting slowly */
+.creature { position: absolute; z-index: 0; pointer-events: none; opacity: .9; filter: drop-shadow(0 0 24px rgba(120, 200, 255, .18)); animation: drift 14s ease-in-out infinite; }
+main > section > :not(.creature) { position: relative; z-index: 1; }
+.creature--jelly-blue { width: 90px; left: 1%; top: -40px; }
+.creature--turtle { width: 210px; right: 2%; top: 30px; animation-duration: 18s; }
+.creature--seahorse { width: 90px; left: 4%; top: 40px; }
+.creature--manta { width: 150px; right: 8%; top: 18%; animation-duration: 20s; }
+.creature--pearlfish { width: 170px; left: 1%; top: -10px; transform: scaleX(-1); animation-name: drift-flip; }
+.creature--jelly-red { width: 110px; right: 6%; top: 12%; }
+.creature--sunfish { width: 150px; left: 4%; top: 10px; animation-duration: 16s; }
+.creature--mandarin { width: 120px; right: 3%; top: 20px; }
+.creature--coral { width: 320px; right: 0; bottom: 0; animation: none; opacity: .8; }
+.creature--anemone { width: 300px; left: 0; bottom: 0; animation: none; opacity: .8; }
+@keyframes drift { 0%, 100% { translate: 0 0; } 50% { translate: 12px -18px; } }
+@keyframes drift-flip { 0%, 100% { translate: 0 0; } 50% { translate: -14px -12px; } }
+@media (max-width: 760px) {
+  .creature { width: 70px !important; opacity: .7; }
+  .creature--coral, .creature--anemone { width: 160px !important; }
+  .creature--turtle { width: 110px !important; }
+}
+@media (prefers-reduced-motion: reduce) { .creature { animation: none; } }
+
+.statement__action { margin-top: 32px; display: flex; justify-content: center; }
+
+/* Testimonies in 3D glass, like the buttons and the science card */
+.quote {
+  position: relative; border: 0;
+  background:
+    radial-gradient(70% 40% at 25% 0%, rgba(255,255,255,.12), rgba(255,255,255,0) 100%),
+    linear-gradient(to bottom, rgba(120,190,210,.18) 0%, rgba(20,48,62,.74) 40%, rgba(12,34,46,.86) 100%);
+  backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%);
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.32),
+    inset 0 -6px 14px rgba(0,30,45,.55),
+    0 3px 0 rgba(140,205,220,.2),
+    0 6px 0 rgba(0,20,30,.55),
+    0 24px 40px -14px rgba(0,8,14,.8);
+}
+.quote::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.1) 45%, rgba(178,242,255,.3));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.voices__row { padding-top: 12px; padding-bottom: 28px; }

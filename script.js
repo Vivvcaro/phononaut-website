@@ -1,10 +1,15 @@
 // The five science moments: the arrows step through them.
 const moments = [
-  ["A song that gave you chills.", "Dopamine and endogenous opioid release"],
-  ["A melody that brought back a forgotten memory.", "Prefrontal–hippocampal memory circuits"],
-  ["A voice that made you feel safe.", "Oxytocin and vagal regulation"],
-  ["A chord that moved you to tears.", "Endogenous opioid release"],
-  ["A rhythm that changed your mood in seconds.", "Dopamine and noradrenaline release"],
+  ["A song that gave you chills.", "Dopamine and endogenous opioid release",
+   "Salimpoor et al. (2011). Anatomically distinct dopamine release during anticipation and experience of peak emotion to music. Nature Neuroscience.", "https://doi.org/10.1038/nn.2726"],
+  ["A melody that brought back a forgotten memory.", "Prefrontal–hippocampal memory circuits",
+   "Janata (2009). The neural architecture of music-evoked autobiographical memories. Cerebral Cortex.", "https://doi.org/10.1093/cercor/bhp008"],
+  ["A voice that made you feel safe.", "Oxytocin and vagal regulation",
+   "Seltzer, Ziegler & Pollak (2010). Social vocalizations can release oxytocin in humans. Proceedings of the Royal Society B.", "https://doi.org/10.1098/rspb.2010.0567"],
+  ["A chord that moved you to tears.", "Endogenous opioid release",
+   "Blood & Zatorre (2001). Intensely pleasurable responses to music correlate with activity in brain regions implicated in reward and emotion. PNAS.", "https://doi.org/10.1073/pnas.191355898"],
+  ["A rhythm that changed your mood in seconds.", "Dopamine and noradrenaline release",
+   "Chanda & Levitin (2013). The neurochemistry of music. Trends in Cognitive Sciences.", "https://doi.org/10.1016/j.tics.2013.02.007"],
 ];
 
 const moment = document.getElementById("moment");
@@ -14,17 +19,19 @@ const dashes = document.querySelectorAll(".progress__dashes span");
 let current = 0;
 
 const card = document.querySelector(".deck .card");
+const paper = document.getElementById("paper");
+function setPaper(i) { if (paper) { paper.textContent = moments[i][2]; paper.href = moments[i][3]; } }
 const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function show(i) {
   current = (i + moments.length) % moments.length;
   moment.textContent = moments[current][0];
   if (calm || !card) {
-    mechanism.textContent = moments[current][1];
+    mechanism.textContent = moments[current][1]; setPaper(current);
   } else {
     // the card slips away and the next one arrives with the new element
     card.classList.add("is-changing");
-    setTimeout(() => { mechanism.textContent = moments[current][1]; card.classList.remove("is-changing"); }, 250);
+    setTimeout(() => { mechanism.textContent = moments[current][1]; setPaper(current); card.classList.remove("is-changing"); }, 250);
   }
   count.textContent = String(current + 1).padStart(2, "0") + " / 05";
   dashes.forEach((d, k) => d.classList.toggle("is-on", k === current));

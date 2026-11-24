@@ -216,16 +216,16 @@ main > section:not(.hero):not(.wrap)::before, .footer::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
     linear-gradient(to bottom, var(--sea) 0%, rgba(3,17,26,.35) 22%, rgba(3,17,26,.35) 78%, var(--sea) 100%),
-    url("images/water.jpg") var(--wpos, center) / var(--wsize, cover) no-repeat;
+    url("images/water.jpg?v=1795480886") var(--wpos, center) / var(--wsize, cover) no-repeat;
   transform: var(--wflip, none);
   opacity: var(--wo, .9);
 }
-main > section:nth-of-type(4n+1) { --wpos: 15% 25%; --wsize: 170% auto; }
-main > section:nth-of-type(4n+2) { --wpos: 75% 60%; --wsize: 150% auto; --wflip: scaleX(-1); }
-main > section:nth-of-type(4n+3) { --wpos: 40% 85%; --wsize: 210% auto; --wflip: scaleY(-1); }
-main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip: scale(-1, -1); }
+main > section:nth-of-type(4n+1) { --wpos: 15% 25%; --wsize: 140% auto; }
+main > section:nth-of-type(4n+2) { --wpos: 75% 60%; --wsize: 130% auto; --wflip: scaleX(-1); }
+main > section:nth-of-type(4n+3) { --wpos: 40% 85%; --wsize: 160% auto; --wflip: scaleY(-1); }
+main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip: scale(-1, -1); }
 .statement--water, .section--water { --wo: 1; --wsize: cover; --wpos: center; }
-.footer { --wpos: 30% 70%; --wsize: 220% auto; --wo: .5; }
+.footer { --wpos: 30% 70%; --wsize: 160% auto; --wo: .5; }
 .statement--water { padding: 160px 0; }
 
 /* Questions */

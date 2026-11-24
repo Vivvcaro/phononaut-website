@@ -96,11 +96,8 @@ button.button { font-family: inherit; cursor: pointer; }
 .logo span { font-family: var(--serif); font-weight: 300; font-size: 28px; color: var(--white); }
 
 /* Hero */
-.hero { position: relative; min-height: 820px; display: flex; align-items: center; overflow: hidden; background: none; }
-.hero__phones { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("images/hero-phones.png?v=2") right -30px center / auto 96% no-repeat; }
-.hero::after { z-index: 1; }
-.hero__words { z-index: 2 !important; }
-.hero::after { content: none; }
+.hero { position: relative; min-height: 820px; display: flex; align-items: center; background: url("images/hero-phones.png?v=2") right -30px center / auto 96% no-repeat, url("images/water.jpg?v=1795513980") center / cover no-repeat; }
+.hero::after { content: ""; position: absolute; inset: auto 0 0 0; height: 260px; background: linear-gradient(to bottom, rgba(3,17,26,0), var(--sea)); pointer-events: none; }
 .hero__words { position: relative; z-index: 1; max-width: 1440px; width: 100%; margin: 0 auto; padding: 0 80px; }
 .hero h1 { font-size: 76px; max-width: 700px; }
 .hero__sub { margin: 22px 0 36px; font-size: 21px; }
@@ -299,8 +296,7 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip:
   .logo img { width: 38px; }
   .logo span { font-size: 22px; }
   .nav .button { padding: 9px 16px; font-size: 13px; }
-  .hero { min-height: 0; padding: 64px 0 380px; }
-  .hero__phones { background-size: auto 360px; background-position: 70% bottom; }
+  .hero { min-height: 0; padding: 64px 0 380px; background-size: auto 360px, cover; background-position: 70% bottom, center; }
   .hero::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 62%; background: linear-gradient(to bottom, var(--sea) 70%, rgba(3,17,26,0)); }
   .hero__words { padding: 0 16px; }
   .hero h1 { font-size: 44px; }
@@ -439,15 +435,3 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 150% auto; --wflip:
 .voices .arrow { position: absolute; top: calc(50% + 40px); transform: translateY(-50%); width: 56px; height: 56px; font-size: 22px; z-index: 3; right: 56px; }
 .voices .arrow--left { right: auto; left: 56px; }
 @media (max-width: 760px) { .voices .arrow { width: 44px; height: 44px; right: 12px; } .voices .arrow--left { left: 12px; right: auto; } }
-
-/* One ocean behind the whole page: the water stays still while the page moves over it,
-   and ripples spread from where people click on the water (never over pictures or cards). */
-.ocean { position: fixed; inset: 0; z-index: -1; background: var(--sea) url("images/water.jpg?v=3") center / cover no-repeat; }
-.ocean canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-body { background: transparent; }
-html { background: var(--sea); }
-/* keep each section separate: dark at its top and bottom, the water showing through in the middle */
-main > section:not(.hero):not(.wrap)::before, .footer::before {
-  content: "" !important; background: linear-gradient(to bottom, var(--sea) 0%, rgba(3,17,26,.35) 22%, rgba(3,17,26,.35) 78%, var(--sea) 100%) !important; transform: none !important; opacity: 1 !important;
-}
-.hero::after { content: "" !important; position: absolute; inset: auto 0 0 0; height: 260px; background: linear-gradient(to bottom, rgba(3,17,26,0), var(--sea)); pointer-events: none; z-index: 1; }

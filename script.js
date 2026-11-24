@@ -220,41 +220,43 @@ if (collab) {
   });
 }
 
-// Ripples on the hero's water: rings spread from a click, and softer ones follow the pointer.
+// Ripples on the water behind the whole page. A click on the water starts one slow,
+// natural ripple: a few rings that bend the light as they spread and fade.
 (function () {
   const canvas = document.getElementById("ripple");
   if (!canvas) return;
-  const hero = canvas.closest(".hero");
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: false, preserveDrawingBuffer: true });
+  const gl = canvas.getContext("webgl", { antialias: false });
   if (!gl || still) { canvas.remove(); return; }
 
-  const MAX = 24;
+  const MAX = 6, LIFE = 4.5;
   const vs = `attribute vec2 p; varying vec2 v; void main(){ v = p*0.5+0.5; gl_Position = vec4(p,0.,1.); }`;
   const fs = `precision highp float;
-    varying vec2 v; uniform sampler2D img; uniform vec2 res; uniform vec2 imgSize; uniform float now;
-    uniform vec4 rip[${MAX}]; // x, y (pixels), start time, strength
+    varying vec2 v; uniform sampler2D img; uniform vec2 res; uniform vec2 imgSize; uniform float now; uniform float dpr;
+    uniform vec4 rip[${MAX}];
     void main(){
       vec2 px = vec2(v.x, 1.0 - v.y) * res;
-      vec2 off = vec2(0.0); float light = 0.0;
+      vec2 grad = vec2(0.0);
       for (int i = 0; i < ${MAX}; i++) {
         vec4 r = rip[i]; if (r.w <= 0.0) continue;
-        float age = now - r.z; if (age < 0.0 || age > 3.2) continue;
-        vec2 d = px - r.xy; float dist = length(d);
-        float radius = age * 260.0;
-        float band = dist - radius;
-        float env = exp(-abs(band) / 26.0) * (1.0 - age / 3.2) * r.w;
-        float wave = sin(band / 7.5) * env;
-        off += (dist > 0.001 ? d / dist : vec2(0.0)) * wave * 11.0;
-        // the crest of each ring catches the light; the trough is a touch darker
-        light += max(wave, 0.0) * 0.55 - max(-wave, 0.0) * 0.18;
+        float age = now - r.z; if (age < 0.0 || age > ${LIFE.toFixed(1)}) continue;
+        vec2 d = px - r.xy; float dist = max(length(d), 0.001);
+        float speed = 150.0 * dpr, lambda = 34.0 * dpr;
+        float front = age * speed;
+        float band = dist - front;
+        // a short train of rings just behind the front, fading with age and distance
+        float env = smoothstep(lambda * 0.2, 0.0, band) * exp(band / (lambda * 2.4)) * smoothstep(-front, -front + lambda, -dist);
+        float fade = (1.0 - age / ${LIFE.toFixed(1)}); fade *= fade;
+        float slope = cos(band / lambda * 6.2831) * env * fade * r.w;
+        grad += d / dist * slope;
       }
-      // cover-fit the picture like background-size: cover
       float s = max(res.x / imgSize.x, res.y / imgSize.y);
       vec2 size = imgSize * s; vec2 start = (res - size) * 0.5;
-      vec2 uv = (px + off - start) / size;
+      vec2 uv = (px + grad * 7.0 * dpr - start) / size;
       vec3 c = texture2D(img, clamp(uv, 0.001, 0.999)).rgb;
-      c += vec3(0.45, 0.78, 0.88) * light * 0.6;
+      // light from the upper left catches the side of each ring facing it
+      float shine = dot(grad, normalize(vec2(-0.6, -0.8)));
+      c += vec3(0.42, 0.72, 0.82) * max(shine, 0.0) * 0.20 - vec3(0.02, 0.04, 0.05) * max(-shine, 0.0) * 0.6;
       gl_FragColor = vec4(c, 1.0);
     }`;
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
@@ -262,17 +264,27 @@ if (collab) {
   gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.remove(); return; }
   gl.useProgram(prog);
-  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const U = (n) => gl.getUniformLocation(prog, n);
-  const uRes = U("res"), uImg = U("imgSize"), uNow = U("now"), uRip = U("rip");
+  const uRes = U("res"), uImg = U("imgSize"), uNow = U("now"), uRip = U("rip"), uDpr = U("dpr");
 
-  const ripples = new Float32Array(MAX * 4); let next = 0;
+  const ripples = new Float32Array(MAX * 4); let next = 0, ready = false, running = false, dpr = 1;
   const t0 = performance.now(); const now = () => (performance.now() - t0) / 1000;
-  let dpr = 1;
+  const active = () => { const t = now(); for (let i = 0; i < MAX; i++) if (ripples[i*4+3] > 0 && t - ripples[i*4+2] < 4.6) return true; return false; };
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(innerWidth * dpr); canvas.height = Math.round(innerHeight * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(uRes, canvas.width, canvas.height); gl.uniform1f(uDpr, dpr);
+    if (ready) frame();
+  }
+  function frame() { gl.uniform1f(uNow, now()); gl.uniform4fv(uRip, ripples); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+  function loop() { frame(); if (active()) requestAnimationFrame(loop); else { running = false; frame(); } }
   function add(x, y, strength) {
     ripples.set([x * dpr, y * dpr, now(), strength], next * 4); next = (next + 1) % MAX;
+    if (!running) { running = true; requestAnimationFrame(loop); }
   }
 
   const img = new Image();
@@ -282,34 +294,16 @@ if (collab) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
     gl.uniform2f(uImg, img.width, img.height);
-    resize(); requestAnimationFrame(draw);
-    canvas.classList.add("is-ready");
+    ready = true; resize();
+    setTimeout(() => add(innerWidth * 0.3, innerHeight * 0.62, 0.7), 1200);
   };
-  const bg = getComputedStyle(hero).backgroundImage.match(/url\("?([^")]+)"?\)/);
-  img.src = bg ? bg[1] : "images/water.jpg";
+  img.src = "images/water.jpg?v=3";
+  addEventListener("resize", resize);
 
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = hero.clientWidth, h = hero.clientHeight;
-    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-    gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(uRes, canvas.width, canvas.height);
-  }
-  window.addEventListener("resize", resize);
-
-  let visible = true;
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(hero);
-  function draw() {
-    if (visible) { gl.uniform1f(uNow, now()); gl.uniform4fv(uRip, ripples); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
-    requestAnimationFrame(draw);
-  }
-
-  const point = (e) => { const r = hero.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
-  hero.addEventListener("pointerdown", (e) => { if (e.target.closest("a, button")) return; const [x, y] = point(e); add(x, y, 1.0); });
-  let last = 0, lx = -999, ly = -999;
-  hero.addEventListener("pointermove", (e) => {
-    const t = performance.now(); const [x, y] = point(e);
-    if (t - last > 140 && Math.hypot(x - lx, y - ly) > 40) { add(x, y, 0.35); last = t; lx = x; ly = y; }
+  // only clicks on the water itself: not on text, buttons, pictures, cards or forms
+  const solid = "a, button, img, input, textarea, label, summary, dialog, p, h1, h2, h3, cite, .card, .quote, .step__card, .step__picture, .doses, .about__card, .photos, .hero__words, .nav, .banner, .footer";
+  document.addEventListener("pointerdown", (e) => {
+    if (!ready || e.button > 0 || e.target.closest(solid)) return;
+    add(e.clientX, e.clientY, 1.0);
   });
-  // a first gentle ring so people notice the water is alive
-  setTimeout(() => add(hero.clientWidth * 0.32, hero.clientHeight * 0.55, 0.6), 900);
 })();

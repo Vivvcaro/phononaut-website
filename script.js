@@ -89,7 +89,7 @@ if (signup) {
     document.getElementById("signup-list").value = current.list;
     document.getElementById("signup-subject").value = current.subject;
     submit.textContent = current.button;
-    form.querySelectorAll(".signup__label, .signup__input, .signup__submit, .signup__error").forEach((el) => (el.hidden = false));
+    form.querySelectorAll(".signup__label, .signup__input, .signup__submit, .signup__error, #signup-eyebrow, #signup-title, #signup-lead").forEach((el) => (el.hidden = false));
     done.hidden = true; error.textContent = ""; email.removeAttribute("aria-invalid"); email.value = "";
     signup.showModal();
     email.focus();
@@ -114,8 +114,7 @@ if (signup) {
     try {
       const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
       if (!res.ok) throw new Error("not ok");
-      form.querySelectorAll(".signup__label, .signup__input, .signup__submit, .signup__error").forEach((el) => (el.hidden = true));
-      document.getElementById("signup-lead").textContent = "";
+      form.querySelectorAll(".signup__label, .signup__input, .signup__submit, .signup__error, #signup-eyebrow, #signup-title, #signup-lead").forEach((el) => (el.hidden = true));
       done.textContent = current.done; done.hidden = false;
     } catch (err) {
       error.textContent = "Something went wrong. Please try again, or write to hello@phononaut.com.";

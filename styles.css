@@ -326,6 +326,7 @@ main > section:nth-of-type(4n)   { --wpos: 90% 15%; --wsize: 190% auto; --wflip:
 .signup__error { min-height: 1.2em; font-size: 14px; color: #f2b8b8; }
 .signup__submit { justify-content: center; margin-top: 4px; }
 .signup__submit[disabled] { opacity: .6; cursor: wait; }
-.signup__done { font-family: var(--serif); font-size: 26px; color: var(--white); text-align: center; padding: 8px 0; }
+.signup__done { font-family: var(--serif); font-size: 32px; line-height: 1.2; color: var(--white); text-align: center; padding: 28px 12px 20px; }
+.signup [hidden] { display: none !important; }
 .signup__close { position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--body); font-size: 26px; line-height: 1; cursor: pointer; }
 .signup__close:hover { background: rgba(255,255,255,.08); color: var(--white); }

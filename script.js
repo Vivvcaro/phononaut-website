@@ -219,3 +219,96 @@ if (collab) {
     }
   });
 }
+
+// Ripples on the hero's water: rings spread from a click, and softer ones follow the pointer.
+(function () {
+  const canvas = document.getElementById("ripple");
+  if (!canvas) return;
+  const hero = canvas.closest(".hero");
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const gl = canvas.getContext("webgl", { premultipliedAlpha: false, antialias: false });
+  if (!gl || still) { canvas.remove(); return; }
+
+  const MAX = 24;
+  const vs = `attribute vec2 p; varying vec2 v; void main(){ v = p*0.5+0.5; gl_Position = vec4(p,0.,1.); }`;
+  const fs = `precision highp float;
+    varying vec2 v; uniform sampler2D img; uniform vec2 res; uniform vec2 imgSize; uniform float now;
+    uniform vec4 rip[${MAX}]; // x, y (pixels), start time, strength
+    void main(){
+      vec2 px = vec2(v.x, 1.0 - v.y) * res;
+      vec2 off = vec2(0.0); float light = 0.0;
+      for (int i = 0; i < ${MAX}; i++) {
+        vec4 r = rip[i]; if (r.w <= 0.0) continue;
+        float age = now - r.z; if (age < 0.0 || age > 3.2) continue;
+        vec2 d = px - r.xy; float dist = length(d);
+        float radius = age * 260.0;
+        float band = dist - radius;
+        float env = exp(-abs(band) / 26.0) * (1.0 - age / 3.2) * r.w;
+        float wave = sin(band / 7.5) * env;
+        off += (dist > 0.001 ? d / dist : vec2(0.0)) * wave * 9.0;
+        light += wave * 0.10;
+      }
+      // cover-fit the picture like background-size: cover
+      float s = max(res.x / imgSize.x, res.y / imgSize.y);
+      vec2 size = imgSize * s; vec2 start = (res - size) * 0.5;
+      vec2 uv = (px + off - start) / size;
+      vec3 c = texture2D(img, clamp(uv, 0.001, 0.999)).rgb;
+      c += vec3(0.55, 0.85, 0.95) * light;
+      gl_FragColor = vec4(c, 1.0);
+    }`;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.remove(); return; }
+  gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = (n) => gl.getUniformLocation(prog, n);
+  const uRes = U("res"), uImg = U("imgSize"), uNow = U("now"), uRip = U("rip");
+
+  const ripples = new Float32Array(MAX * 4); let next = 0;
+  const t0 = performance.now(); const now = () => (performance.now() - t0) / 1000;
+  let dpr = 1;
+  function add(x, y, strength) {
+    ripples.set([x * dpr, y * dpr, now(), strength], next * 4); next = (next + 1) % MAX;
+  }
+
+  const img = new Image();
+  img.onload = () => {
+    const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+    gl.uniform2f(uImg, img.width, img.height);
+    resize(); requestAnimationFrame(draw);
+    canvas.classList.add("is-ready");
+  };
+  const bg = getComputedStyle(hero).backgroundImage.match(/url\("?([^")]+)"?\)/);
+  img.src = bg ? bg[1] : "images/water.jpg";
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = hero.clientWidth, h = hero.clientHeight;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(uRes, canvas.width, canvas.height);
+  }
+  window.addEventListener("resize", resize);
+
+  let visible = true;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(hero);
+  function draw() {
+    if (visible) { gl.uniform1f(uNow, now()); gl.uniform4fv(uRip, ripples); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+    requestAnimationFrame(draw);
+  }
+
+  const point = (e) => { const r = hero.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  hero.addEventListener("pointerdown", (e) => { if (e.target.closest("a, button")) return; const [x, y] = point(e); add(x, y, 1.0); });
+  let last = 0, lx = -999, ly = -999;
+  hero.addEventListener("pointermove", (e) => {
+    const t = performance.now(); const [x, y] = point(e);
+    if (t - last > 140 && Math.hypot(x - lx, y - ly) > 40) { add(x, y, 0.35); last = t; lx = x; ly = y; }
+  });
+  // a first gentle ring so people notice the water is alive
+  setTimeout(() => add(hero.clientWidth * 0.32, hero.clientHeight * 0.55, 0.6), 900);
+})();
